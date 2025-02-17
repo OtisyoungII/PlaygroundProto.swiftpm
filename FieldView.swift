@@ -14,11 +14,9 @@ struct FieldView: View {
             // Custom gradient background using a mesh-like pattern
 //            Color.blue
             Image("CloseFieldView")
-//            Image("CloseFieldView.jpg")
-//                .resizable()
-//                .scaledToFill()
-//            
-//            .ignoresSafeArea()
+               .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
 
             // You can add more elements here if needed, like other shapes or text
             VStack {
