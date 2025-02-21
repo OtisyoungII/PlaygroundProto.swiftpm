@@ -103,7 +103,7 @@ class RotatingSphereViewController: UIViewController {
         }
         
         // Apply rotation animation to the sphere
-        let rotationAction = SCNAction.rotateBy(x: 0, y: CGFloat.pi * 2, z: 0, duration: 5)
+        let rotationAction = SCNAction.rotateBy(x: 0, y: CGFloat.pi * 2, z: 0, duration: 7)
         let repeatAction = SCNAction.repeatForever(rotationAction)
         sphereNode.runAction(repeatAction)
         

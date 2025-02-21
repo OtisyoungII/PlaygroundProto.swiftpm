@@ -24,27 +24,31 @@ struct FieldView: View {
                 
                 
                 VStack {
-                    Text("Black King Baseball")
+                    Text("Leaders In The Game")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .padding()
                 }
+                
+                
+                
                 NavigationLink {
                     PlayersView()
                     
                 } label: {
                     
                     
-                    Image("MookieBetts1")
+                    Image("Baseballs")
                         .resizable()
-                        .frame(width: 20, height: 25)
+                        .frame(width: 300, height: 300)
                         .foregroundStyle(.white)
                         .padding(.trailing)
                     
                     
                     
                 }
+        
                 
             }
             }
