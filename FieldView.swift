@@ -6,6 +6,7 @@
 //
 
 
+
 import SwiftUI
 
 // Define the Player model
@@ -31,6 +32,9 @@ struct FieldView: View {
     
     // State to track whether the baseball is clickable
     @State private var isBaseballClickable = false
+    
+    // State to control navigation to PlayersView
+    @State private var navigateToPlayersView = false
     
     var body: some View {
         NavigationStack {
@@ -72,8 +76,8 @@ struct FieldView: View {
                         .onTapGesture {
                             // Make sure the baseball is clickable only after a player is selected
                             if isBaseballClickable {
-                                // Baseball is tapped and player is selected, navigate to PlayersView
                                 print("Baseball tapped! Navigate to PlayersView.")
+                                navigateToPlayersView = true
                             }
                         }
                     
@@ -142,17 +146,18 @@ struct FieldView: View {
                     .edgesIgnoringSafeArea(.all)
                 }
             }
-            .overlay(
-                // Add a navigation link to PlayersView when the baseball is tapped
-                NavigationStack(destination: PlayersView(), isActive: .constant(isBaseballClickable))
+            
+            // Navigation to PlayersView using the new NavigationLink method
+            NavigationLink(
+                value: navigateToPlayersView,
+                label: { EmptyView() }
             )
+            .navigationDestination(isPresented: $navigateToPlayersView) {
+                PlayersView() // Navigate to PlayersView when triggered
+            }
         }
     }
 }
-
-
-    
-
 
 #Preview {
     FieldView()
