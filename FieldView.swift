@@ -99,12 +99,13 @@ struct FieldView: View {
                                 .background(Color.orange)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
-                                .padding(.top, 20) // Add top padding
+                                .padding(.top, 20) // Add top padding to ensure it's within the safe area
                         }
                         .padding(.trailing, 20) // Add right padding to give space from the edge
                     }
                     Spacer()
                 }
+                .padding(.top, 40) // Ensures the button stays within the safe area
 
                 // Sliding menu for players that appears when isMenuOpen is true
                 if isMenuOpen {
@@ -156,6 +157,7 @@ struct FieldView: View {
                 PlayersView() // Navigate to PlayersView when triggered
             }
         }
+        .padding(.top, 40) // Ensure everything is within the safe area
     }
 }
 
