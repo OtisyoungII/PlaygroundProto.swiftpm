@@ -13,7 +13,7 @@ struct ContentView: View {
                     Text("BlackBallers")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .foregroundColor(.blue)
                         .shadow(color: .red, radius: 12)
                         .padding(.top, 50) // Adds top padding to prevent the title from sticking to the top
 
@@ -35,10 +35,10 @@ struct ContentView: View {
                         Text("START")
                             .font(.title2)
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            .foregroundColor(.blue)
                             .padding()
                             .frame(width: 150)
-                            .background(Color.orange)
+                            .background(Color.white)
                             .cornerRadius(10)
                             .shadow(color: .red, radius: 5)
                     }

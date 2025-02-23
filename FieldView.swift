@@ -19,9 +19,9 @@ struct FieldView: View {
     // List of players
     let players = [
         Player(name: "Mookie Betts", number: "50"),
-        Player(name: "Mike Trout", number: "27"),
+        Player(name: "Marcus Semien", number: "2"),
         Player(name: "Aaron Judge", number: "99"),
-        Player(name: "Shohei Ohtani", number: "17")
+        Player(name: "Michael Harris", number: "23")
     ]
     
     // State to track whether the menu is shown
@@ -49,25 +49,25 @@ struct FieldView: View {
                     Text("Leaders In The Game")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundColor(.red)
+                        .foregroundColor(.blue)
                         .padding()
-                    
+                        .padding(.top, 20) // Add top padding to ensure it's within the safe area
                     Spacer()
                     
                     // Baseball image that shows the player's number when selected
                     Image("Baseballs")
                         .resizable()
                         .frame(width: 300, height: 300)
-                        .foregroundStyle(.white)
+                        .foregroundStyle(.blue)
                         .padding(.top, 20)
                         .overlay(
                             // Display the player number if a player is selected
                             Group {
                                 if let player = selectedPlayer {
                                     Text("#\(player.number)")
-                                        .font(.title)
+                                        .font(.largeTitle)
                                         .fontWeight(.bold)
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.blue)
                                         .padding(.top, 20)
                                         .transition(.scale)
                                 }
@@ -96,8 +96,8 @@ struct FieldView: View {
                             Text("Players")
                                 .fontWeight(.bold)
                                 .padding()
-                                .background(Color.orange)
-                                .foregroundColor(.white)
+                                .background(Color.white)
+                                .foregroundColor(.blue)
                                 .cornerRadius(10)
                                 .padding(.top, 20) // Add top padding to ensure it's within the safe area
                         }
@@ -105,7 +105,7 @@ struct FieldView: View {
                     }
                     Spacer()
                 }
-                .padding(.top, 40) // Ensures the button stays within the safe area
+                .padding(.top, 40) // Makes sure the button stays within the safe area
 
                 // Sliding menu for players that appears when isMenuOpen is true
                 if isMenuOpen {
@@ -114,7 +114,7 @@ struct FieldView: View {
                             Text("Select a Player")
                                 .font(.title)
                                 .fontWeight(.bold)
-                                .foregroundColor(.white)
+                                .foregroundColor(.blue)
                                 .padding()
 
                             List(players, id: \.name) { player in
