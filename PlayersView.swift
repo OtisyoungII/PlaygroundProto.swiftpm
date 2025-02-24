@@ -9,12 +9,14 @@ import SwiftUI
 import SceneKit
 
 struct PlayersView: View {
+    var player: Player // Receive the selected player
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 RadialGradient(gradient: Gradient(colors: [Color.green, Color(.black)]), center: .center, startRadius: 250, endRadius: 900)
                     .ignoresSafeArea()
-
+                
                 VStack {
                     // Title at the top
                     Text("BlackBallers")
@@ -22,22 +24,56 @@ struct PlayersView: View {
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .shadow(color: .yellow, radius: 12)
-                        .padding(.top, 50) // Adds top padding to prevent the title from sticking to the top
-
-                    // The rotating square in the middle
+                        .padding(.top, 50)
+                    
+                    // The rotating square in the middle with the player image
                     GeometryReader { geometry in
-                        RotatingSquareView()
+                        RotatingSquareView(player: player) // Pass player data to RotatingSquareView
                             .frame(width: geometry.size.width * 0.4, height: geometry.size.width * 0.4)
-                            .padding(.vertical, -100) // Adds vertical padding to center it
+                            .padding(.vertical, -100)
                     }
-                    .frame(maxHeight: 300) // Limit the max height of the GeometryReader to keep the sphere in a proper range
-
+                    .frame(maxHeight: 300)
+                    
+                    // Player details
+                    VStack(spacing: 10) {
+                        Text(player.name)
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                        
+                        Text("Position: \(player.position)")
+                            .foregroundColor(.white)
+                        
+                        Text("Batting Order: \(player.battingOrder)")
+                            .foregroundColor(.white)
+                        
+                        Text("Strength: \(player.strength)")
+                            .foregroundColor(.white)
+                        
+                        Text("Speed: \(player.speed)")
+                            .foregroundColor(.white)
+                        
+                        Text("On-Base %: \(player.onBasePercentage)")
+                            .foregroundColor(.white)
+                        
+                        Text("Stats: \(player.stats)")
+                            .foregroundColor(.white)
+                        
+                        Text("Injuries: \(player.injuries)")
+                            .foregroundColor(.white)
+                        
+                        Text("Accomplishments: \(player.accomplishments)")
+                            .foregroundColor(.white)
+                            .padding(.bottom, 20)
+                    }
+                    .padding()
+                    
                     // Spacer to push the start button towards the bottom
                     Spacer()
-
-                    // Start Button
+                    
+                    // Back Button to return to FieldView
                     NavigationLink(destination: FieldView()) {
-                        Text("Back to Players")
+                        Text("Back to The Field")
                             .font(.title2)
                             .fontWeight(.bold)
                             .foregroundColor(.white)
@@ -47,9 +83,9 @@ struct PlayersView: View {
                             .cornerRadius(10)
                             .shadow(color: .yellow, radius: 5)
                     }
-                    .padding(.bottom, 50) // Adds padding to ensure it is not stuck at the bottom
+                    .padding(.bottom, 50)
                 }
-                .frame(maxHeight: .infinity) // Ensures the VStack takes up the full available space
+                .frame(maxHeight: .infinity)
             }
         }
     }
@@ -57,8 +93,10 @@ struct PlayersView: View {
 
 // A SwiftUI view that wraps a SceneKit view for rendering the rotating square
 struct RotatingSquareView: UIViewControllerRepresentable {
+    var player: Player // Receive the player data
+    
     func makeUIViewController(context: Context) -> RotatingSquareViewController {
-        return RotatingSquareViewController()
+        return RotatingSquareViewController(player: player)
     }
     
     func updateUIViewController(_ uiViewController: RotatingSquareViewController, context: Context) {
@@ -69,7 +107,17 @@ struct RotatingSquareView: UIViewControllerRepresentable {
 class RotatingSquareViewController: UIViewController {
     var sceneView: SCNView!
     var scene: SCNScene!
-    var squareNode: SCNNode! // Corrected variable name for the square node
+    var squareNode: SCNNode!
+    var player: Player // Receive the player data
+    
+    init(player: Player) {
+        self.player = player
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,13 +140,13 @@ class RotatingSquareViewController: UIViewController {
         cameraNode.position = SCNVector3(x: 0, y: 0, z: 5)
         scene.rootNode.addChildNode(cameraNode)
         
-        // Create a square geometry and node (changed from SCNSphere to SCNBox)
+        // Create a square geometry and node
         let squareGeometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
         squareNode = SCNNode(geometry: squareGeometry)
         
-        // Apply baseball texture to the square
-        if let baseballTexture = UIImage(named: "MookieBetts1") {
-            squareGeometry.firstMaterial?.diffuse.contents = baseballTexture
+        // Apply player image texture to the square
+        if let playerImage = UIImage(named: player.assetName) {
+            squareGeometry.firstMaterial?.diffuse.contents = playerImage
         }
         
         scene.rootNode.addChildNode(squareNode)
