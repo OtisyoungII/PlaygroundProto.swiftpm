@@ -10,6 +10,7 @@ import SceneKit
 
 struct PlayersView: View {
     var player: Player // Receive the selected player
+    var resetPlayer: () -> Void
     
     var body: some View {
         NavigationStack {
@@ -28,7 +29,7 @@ struct PlayersView: View {
                     
                     // The rotating square in the middle with the player image
                     GeometryReader { geometry in
-                        RotatingSquareView(player: player) // Pass player data to RotatingSquareView
+                        RotatingSquareView(player: player) // Pass player data to RotatingSquareView ugh
                             .frame(width: geometry.size.width * 0.4, height: geometry.size.width * 0.4)
                             .padding(.vertical, -100)
                     }
@@ -68,24 +69,8 @@ struct PlayersView: View {
                     }
                     .padding()
                     
-                    // Spacer to push the start button towards the bottom
-                    Spacer()
-                    
-                    // Back Button to return to FieldView
-                    NavigationLink(destination: FieldView()) {
-                        Text("Back to The Field")
-                            .font(.title2)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                            .padding()
-                            .frame(width: 200)
-                            .background(Color.orange)
-                            .cornerRadius(10)
-                            .shadow(color: .yellow, radius: 5)
-                    }
-                    .padding(.bottom, 50)
+                    Spacer() // Push content towards the top
                 }
-                .frame(maxHeight: .infinity)
             }
         }
     }
@@ -100,7 +85,7 @@ struct RotatingSquareView: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: RotatingSquareViewController, context: Context) {
-        // Update the view if needed (e.g., for state changes)
+        // Update the view if needed (e.g., for state changes) not for now.
     }
 }
 
@@ -108,7 +93,7 @@ class RotatingSquareViewController: UIViewController {
     var sceneView: SCNView!
     var scene: SCNScene!
     var squareNode: SCNNode!
-    var player: Player // Receive the player data
+    var player: Player // Get the player data
     
     init(player: Player) {
         self.player = player
@@ -144,14 +129,14 @@ class RotatingSquareViewController: UIViewController {
         let squareGeometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
         squareNode = SCNNode(geometry: squareGeometry)
         
-        // Apply player image texture to the square
+        // Player image texture to the square
         if let playerImage = UIImage(named: player.assetName) {
             squareGeometry.firstMaterial?.diffuse.contents = playerImage
         }
         
         scene.rootNode.addChildNode(squareNode)
         
-        // Apply rotation animation to the square
+        // Rotation animation to the square
         let rotationAction = SCNAction.rotateBy(x: 0, y: CGFloat.pi * 2, z: 0, duration: 10)
         let repeatAction = SCNAction.repeatForever(rotationAction)
         squareNode.runAction(repeatAction)

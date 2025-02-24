@@ -21,22 +21,20 @@ struct Player {
     var stats: String
     var injuries: String
     var accomplishments: String
- 
-    
-   // Add property for the assest names
+
+    // Add property for the asset names
     var assetName: String {
         switch name {
         case "Mookie Betts":
             return "MookieBetts1"
         case "Marcus Semien":
             return "MarcusSemien1"
-        case "Aaron Jude":
+        case "Aaron Judge":
             return "AaronJudge1"
         case "Michael Harris":
             return "MichaelHarris1"
-            
         default:
-            return "MookieBetts1"
+            return "Baseballs" // Default image
         }
     }
 }
@@ -54,6 +52,12 @@ struct FieldView: View {
     @State private var selectedPlayer: Player? = nil
     @State private var isBaseballClickable = false
     @State private var navigateToPlayersView = false
+
+    // Resetting the player
+    func resetPlayer() {
+        selectedPlayer = nil
+        isBaseballClickable = false
+    }
     
     var body: some View {
         NavigationStack {
@@ -63,7 +67,7 @@ struct FieldView: View {
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
-                
+
                 VStack {
                     Text("Leaders In The Game")
                         .font(.largeTitle)
@@ -74,7 +78,7 @@ struct FieldView: View {
                     Spacer()
                     
                     // Baseball image that shows the player's number when selected
-                    Image("Baseballs")
+                    Image(selectedPlayer?.assetName ?? "Baseballs") // Use the player's asset image or default to "Baseballs"
                         .resizable()
                         .frame(width: 300, height: 300)
                         .foregroundStyle(.blue)
@@ -98,10 +102,10 @@ struct FieldView: View {
                                 navigateToPlayersView = true
                             }
                         }
-                    
+
                     Spacer()
                 }
-                
+
                 // Button to open the player menu, positioned in the top-right corner
                 VStack {
                     HStack {
@@ -124,8 +128,8 @@ struct FieldView: View {
                     Spacer()
                 }
                 .padding(.top, 40) // Makes sure the button stays within the safe area
-                
-                // Sliding menu for players that appears when isMenuOpen is true
+
+                // Pop-Up menu for players that appears when isMenuOpen is true
                 if isMenuOpen {
                     VStack {
                         VStack {
@@ -134,12 +138,12 @@ struct FieldView: View {
                                 .fontWeight(.bold)
                                 .foregroundColor(.blue)
                                 .padding()
-                            
+
                             List(players, id: \.name) { player in
                                 Button(action: {
                                     // Update selected player and player number
                                     selectedPlayer = player
-                                    isBaseballClickable = true // Enable baseball click after a player is selected
+                                    isBaseballClickable = true // Enable player now click after a player is selected
                                     withAnimation {
                                         isMenuOpen.toggle() // Close the menu after selecting a player
                                     }
@@ -165,17 +169,19 @@ struct FieldView: View {
                     .edgesIgnoringSafeArea(.all)
                 }
             }
-            
+
             // Navigation to PlayersView using the new NavigationLink method
             .navigationDestination(isPresented: $navigateToPlayersView) {
                 if let selectedPlayer = selectedPlayer {
-                    PlayersView(player: selectedPlayer) // Pass selected player to PlayersView
+                    // Pass selected player to PlayersView and resetPlayer function
+                    PlayersView(player: selectedPlayer, resetPlayer: resetPlayer)
                 }
             }
         }
-        .padding(.top, 40) // Ensure everything is within the safe area
+        .padding(.top, 40) // Ensure everything is in the safe area
     }
 }
+
 
 #Preview {
     FieldView()
